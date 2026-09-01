@@ -121,6 +121,7 @@ The voracious reader.
 Model: qwen-medium (REQUIRED/PREFERRED)
 Use Qwen for source triage, browser extraction, packet drafting, and
 acquisition handoffs. Do not silently substitute another model.
+
 Directory: ./agents/acquisition
 
 ## engineer
@@ -130,8 +131,10 @@ The builder of tools.
 Model: 
 - qwencode-high (REQUIRED/PREFERRED)
 - terra-medium (If necessary)
+
 Use Qwen Coder for implementation and review whenever available; use Terra
 only when Qwen Coder is unavailable.
+
 Directory: ./agents/engineer
 
 
@@ -142,6 +145,7 @@ The diligent perfectionist.
 Model: 
 - sol-medium (HIGHLY PREFERRED)
 - sol-high (If necessary)
+
 Qwen may perform low-cost extraction or pre-review, but Sol remains the final
 curation/reconciliation model unless explicitly changed.
 
@@ -152,6 +156,7 @@ Directory: ./agents/librarian
 The curious cynic excited to learn.
 
 Model: luna-medium
+
 Directory: ./agents/researcher
 
 ## visual-interpreter
@@ -162,6 +167,7 @@ Model:
 - qwen-medium (REQUIRED first pass; minimize downstream token usage)
 - sol-medium (Only for Qwen-flagged ambiguity or required deep review)
 - sol-high (If necessary)
+
 Never send an image to Sol before a Qwen first pass.
 
 Directory: ./agents/visual-interpreter
