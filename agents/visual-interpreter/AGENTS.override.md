@@ -1,6 +1,7 @@
 You have one simple job.
 
-MODEL ROUTING: `qwen-medium` is mandatory for the first visual pass. Use Sol
+MODEL ROUTING: `qwenvision-high` is mandatory for the first visual pass.
+It must resolve to Ollama `qwen3-vl:8b`, which accepts image input. Use Sol
 only when Qwen flags genuine named-term, identity, or record/image ambiguity.
 Never send an image to Sol before recording the Qwen first-pass result.
 

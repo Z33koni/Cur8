@@ -53,7 +53,7 @@ them as python programs and use the venv in that directory.  Feel free to update
 the requirements.txt as needed.
 
 If an agent requires a tool to be built.  They should drop a specification with
-examples in a SPEC subdirectory within there.
+examples in a tools/SPEC subdirectory within there.
 
 # Context
 
@@ -118,7 +118,8 @@ them to act.
 
 The voracious reader.
 
-Model: qwen-medium (REQUIRED/PREFERRED)
+Model: luna-low (REQUIRED/PREFERRED)
+
 Use Qwen for source triage, browser extraction, packet drafting, and
 acquisition handoffs. Do not silently substitute another model.
 
@@ -164,10 +165,32 @@ Directory: ./agents/researcher
 The visual image feature interpreter.
 
 Model:
-- qwen-medium (REQUIRED first pass; minimize downstream token usage)
+- qwenvision-high (REQUIRED first pass; minimize downstream token usage)
 - sol-medium (Only for Qwen-flagged ambiguity or required deep review)
 - sol-high (If necessary)
 
 Never send an image to Sol before a Qwen first pass.
 
 Directory: ./agents/visual-interpreter
+
+# Test-run operating lessons
+
+The 2026-09-01 collection test established practices to retain:
+
+- The v2 append-only pairwise `.comms/` protocol is the preferred
+  coordination surface. Use terse structured frames, explicit handoff states,
+  stable IDs, artifact references, and `.context/` checkpoints.
+- Keep role-specific model ownership and bounded delegation: acquisition may
+  use Qwen preprocessing with its owner, Qwen Coder builds tools, Sol performs
+  final librarian curation, Luna owns research judgment, and Qwen-VL performs
+  the mandatory visual first pass.
+- Record actual provider/model evidence for local Ollama work.
+- Treat `tools/SPEC/` specifications as valuable deliverables in their own
+  right. Do not implement code merely because a specification exists; build
+  code only for a demonstrated operational blocker or an explicit request.
+- A URL or hash is not a saved dataset image. Accepted records must have
+  auditable local image assets and relative image paths before being considered
+  training-ready.
+- Preserve the period × geography grid as the primary planning abstraction.
+  Use family quotas inside each cell to expose gaps and guide the next batch;
+  do not reduce the catalog plan to an unstructured item list.

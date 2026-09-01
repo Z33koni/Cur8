@@ -1,0 +1,80 @@
+quota_version: 1
+status: planning
+target_promoted_items: 1000
+primary_assignment_rule: "Each promoted record has exactly one primary period, geography, and family."
+
+snapshot_date: "2026-09-01"
+period_boundary_rule: "Use half-open intervals; the lower bound is inclusive and the upper bound is exclusive."
+periods:
+  p1: {label: "1450-<1600", target: 60}
+  p2: {label: "1600-<1750", target: 90}
+  p3: {label: "1750-<1830", target: 115}
+  p4: {label: "1830-<1900", target: 145}
+  p5: {label: "1900-<1945", target: 180}
+  p6: {label: "1945-<1980", target: 210}
+  p7: {label: "1980-2026-09-01", target: 200}
+
+geographies:
+  g1: {label: "Britain", target: 130}
+  g2: {label: "France", target: 110}
+  g3: {label: "Italy", target: 95}
+  g4: {label: "German-speaking Europe", target: 90}
+  g5: {label: "Netherlands/Scandinavia", target: 85}
+  g6: {label: "Iberia/Mediterranean", target: 75}
+  g7: {label: "Ottoman/Islamic traditions", target: 55}
+  g8: {label: "East Asia", target: 100}
+  g9: {label: "South Asia", target: 65}
+  g10: {label: "North America", target: 145}
+  g11: {label: "Latin America", target: 50}
+
+families:
+  furniture: {label: "Furniture, including credenzas", target: 300}
+  lighting: {label: "Lighting", target: 170}
+  plumbing: {label: "Plumbing: basins, faucets, bathtubs, vanities", target: 220}
+  surfaces: {label: "Surface treatments: paint, wallpaper, tile, stone, paneling", target: 180}
+  decorative: {label: "Decorative objects: curios, mirrors, ceramics, clocks, hardware", target: 130}
+
+# Initial period x geography target matrix. The two-item floor is an allocator
+# constraint; displayed targets are the result after proportional allocation.
+# Family allocations are assigned inside these cells by a deterministic
+# allocator and must reconcile to the family totals above.
+period_geography:
+  p1: {g1: 7, g2: 6, g3: 6, g4: 5, g5: 5, g6: 5, g7: 4, g8: 6, g9: 4, g10: 8, g11: 4}
+  p2: {g1: 11, g2: 10, g3: 8, g4: 8, g5: 8, g6: 7, g7: 5, g8: 9, g9: 6, g10: 13, g11: 5}
+  p3: {g1: 15, g2: 13, g3: 11, g4: 10, g5: 10, g6: 9, g7: 6, g8: 11, g9: 8, g10: 16, g11: 6}
+  p4: {g1: 19, g2: 16, g3: 14, g4: 13, g5: 12, g6: 11, g7: 8, g8: 15, g9: 9, g10: 21, g11: 7}
+  p5: {g1: 24, g2: 20, g3: 17, g4: 16, g5: 15, g6: 13, g7: 10, g8: 18, g9: 12, g10: 26, g11: 9}
+  p6: {g1: 28, g2: 23, g3: 20, g4: 20, g5: 18, g6: 15, g7: 11, g8: 21, g9: 13, g10: 31, g11: 10}
+  p7: {g1: 26, g2: 22, g3: 19, g4: 18, g5: 17, g6: 15, g7: 11, g8: 20, g9: 13, g10: 30, g11: 9}
+
+cell_status:
+  default: unstarted
+  allowed: [unstarted, applicable, partial, researched, not-applicable]
+  applicable: "The cell is historically meaningful and may receive promoted records."
+  partial: "Research is active or evidence is incomplete; candidates may be staged but may not be promoted solely to fill quota."
+  researched: "Researcher and librarian have reviewed the cell scope and evidence requirements."
+  not_applicable_requires: "Evidence that the family/cell is historically absent or not meaningful, not merely that evidence is hard to find; written researcher+librarian rationale and documented redistribution."
+
+cell_ledger_fields:
+  - period_id
+  - geography_id
+  - family_targets
+  - target
+  - accepted
+  - remaining
+  - status
+  - applicability_rationale
+  - source_coverage
+  - image_coverage
+  - terminology_gaps
+  - evidence_gaps
+  - last_audited
+
+allocation_rules:
+  minimum_per_applicable_period_geography_cell: 2
+  allocator: "Initialize every applicable period-geography cell at 2. Process periods p1 through p7; for each period allocate its remaining quota proportionally to the current remaining geography quotas, floor each Hare-Niemeyer share, then assign leftover units by descending fractional remainder, descending remaining geography capacity, and ascending geography ID. Update remaining capacities after each period."
+  family_allocator: "Within each period-geography cell, allocate remaining family quotas proportionally among applicable families using the same floor, fractional remainder, remaining-capacity, then ascending-family-ID tie-break order."
+  substitutions: "Only the librarian may approve a written reassignment. Preserve exact period, geography, and family totals; record old assignment, new assignment, rationale, reviewer, and timestamp in the audit log."
+  primary_assignment: "The librarian sets the primary period, geography, and family. Secondary labels and uncertainty are retained. A primary assignment is immutable except through the audited librarian reassignment procedure."
+  uncertainty: "Unknown, estimated, competing, or low-confidence values remain explicit with rationale; uncertainty never justifies silent quota placement."
+  count_rule: "Rejected, rework, and duplicate records do not count."

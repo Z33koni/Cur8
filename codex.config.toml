@@ -94,6 +94,24 @@ model_provider = "ollama"
 model = "qwen3:30b"
 model_reasoning_effort = "high"
 
+[agents.qwenvision-high]
+description = "Qwen visual first pass"
+model_provider = "ollama"
+model = "qwen3-vl:8b"
+model_reasoning_effort = "medium"
+
+[agents.qwenvision-medium]
+description = "Qwen visual first pass"
+model_provider = "ollama"
+model = "qwen3-vl:8b"
+model_reasoning_effort = "medium"
+
+[agents.qwenvision-low]
+description = "Qwen visual first pass"
+model_provider = "ollama"
+model = "qwen3-vl:8b"
+model_reasoning_effort = "medium"
+
 # --- OpenAI Luna
 
 [agents.luna-low]
